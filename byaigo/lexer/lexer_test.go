@@ -1,8 +1,8 @@
 package lexer
 
 import (
+	"byaigo/token"
 	"testing"
-	"token"
 )
 
 func TestNextTokenShort(t *testing.T) {
@@ -55,6 +55,7 @@ func TestNextTokenLong(t *testing.T) {
 	} else {
 		return false;
 	}
+	== !=
 `
 
 	tests := []struct {
@@ -126,6 +127,8 @@ func TestNextTokenLong(t *testing.T) {
 		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
+		{token.EQ, "=="},
+		{token.NEQ, "!="},
 		{token.EOF, ""},
 	}
 

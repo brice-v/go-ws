@@ -28,6 +28,9 @@ const (
 	LT = "<"
 	GT = ">"
 
+	EQ  = "=="
+	NEQ = "!="
+
 	// Delimeters
 	COMMA     = ","
 	SEMICOLON = ";"
