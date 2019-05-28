@@ -1,6 +1,8 @@
 package token
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type TokenType string
 
