@@ -8,14 +8,15 @@ import (
 
 func TestLetStatements(t *testing.T) {
 	input := `
-let x = 5;
-let y = 10;
-let foobar = 5353;
+let x 5;
+let = 10;
+let 5353;
 `
 	l := lexer.New(input)
 	p := New(l)
 
 	program := p.ParseProgram()
+
 	if program == nil {
 		t.Fatalf("ParseProgram() returned nil")
 	}
@@ -31,6 +32,10 @@ let foobar = 5353;
 		{"foobar"},
 	}
 
+	// putting this below the for block below caused a nil pointer dereference
+	// possibly due to the face that the t and p went into the for statement and were freed?
+	checkParserErrors(t, p)
+
 	for i, tt := range tests {
 		stmt := program.Statements[i]
 		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
@@ -38,7 +43,6 @@ let foobar = 5353;
 		}
 	}
 
-	checkParserErrors(t, p)
 }
 
 func checkParserErrors(t *testing.T, p *Parser) {
