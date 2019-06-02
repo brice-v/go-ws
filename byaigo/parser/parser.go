@@ -67,6 +67,7 @@ func New(l *lexer.Lexer) *Parser {
 	// Registering booleans
 	p.registerPrefix(token.TRUE, p.parseBoolean)
 	p.registerPrefix(token.FALSE, p.parseBoolean)
+	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 	// Register If token for if expressions
 	p.registerPrefix(token.IF, p.parseIfExpression)
 
@@ -82,6 +83,18 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.GT, p.parseInfixExpression)
 
 	return p
+}
+
+func (p *Parser) parseGroupedExpression() ast.Expression {
+	p.nextToken()
+
+	exp := p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	return exp
 }
 
 func (p *Parser) parseBlockStatement() *ast.BlockStatement {
