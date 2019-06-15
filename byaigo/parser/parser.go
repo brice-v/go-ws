@@ -344,11 +344,7 @@ func (p *Parser) parseReturnStatment() *ast.ReturnStatement {
 
 	p.nextToken()
 
-	// TODO Were skipping the expressions until we encounter
-	// a semicolon.
-	for !p.curTokenIs(token.SEMICOLON) {
-		p.nextToken()
-	}
+	stmt.ReturnValue = p.parseExpression(LOWEST)
 
 	return stmt
 }
