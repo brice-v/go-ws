@@ -26,6 +26,29 @@ const (
 	ERROR_OBJ = "ERROR"
 )
 
+// This is the `Environment` Code that handles keeping
+// track of the variable bindings and eventually more
+
+func NewEnvironment() *Environment {
+	s := make(map[string]Object)
+	return &Environment{store: s}
+}
+
+type Environment struct {
+	store map[string]Object
+}
+
+func (e *Environment) Get(name string) (Object, bool) {
+	obj, ok := e.store[name]
+	return obj, ok
+}
+
+func (e *Environment) Set(name string, val Object) Object {
+	e.store[name] = val
+	return val
+}
+
+// Error is the base struct of our Error type
 type Error struct {
 	Message string
 }
