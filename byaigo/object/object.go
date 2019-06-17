@@ -4,7 +4,12 @@ package object
 // used to both represent values as the evaluator encounters and constructs
 // them as well as how the user interacts with values.
 
-import "fmt"
+import (
+	"byaigo/ast"
+	"bytes"
+	"fmt"
+	"strings"
+)
 
 // ObjectType represents the type of an object
 type ObjectType string
@@ -24,6 +29,9 @@ const (
 
 	// ERROR_OBJ is the error object
 	ERROR_OBJ = "ERROR"
+
+	// FUNCTION_OBJ is the function object type
+	FUNCTION_OBJ = "FUNCTION"
 )
 
 // This is the `Environment` Code that handles keeping
@@ -46,6 +54,27 @@ func (e *Environment) Get(name string) (Object, bool) {
 func (e *Environment) Set(name string, val Object) Object {
 	e.store[name] = val
 	return val
+}
+
+type Function struct {
+	Parameters []*ast.Identifier
+	Body       *ast.BlockStatement
+	Env        *Environment
+}
+
+func (f *Function) Type() ObjectType { return FUNCTION_OBJ }
+func (f *Function) Inspect() string {
+	var out bytes.Buffer
+	params := []string{}
+	for _, p := range f.Parameters {
+		params = append(params, p.String())
+	}
+	out.WriteString("fn")
+	out.WriteString("(")
+	out.WriteString(strings.Join(params, ", "))
+	out.WriteString(") ")
+	out.WriteString(f.Body.String())
+	return out.String()
 }
 
 // Error is the base struct of our Error type
