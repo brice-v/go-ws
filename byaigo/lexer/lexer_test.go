@@ -56,6 +56,8 @@ func TestNextTokenLong(t *testing.T) {
 		return false;
 	}
 	== !=
+"foobar"
+"foo bar"
 `
 
 	tests := []struct {
@@ -129,6 +131,8 @@ func TestNextTokenLong(t *testing.T) {
 		{token.RBRACE, "}"},
 		{token.EQ, "=="},
 		{token.NEQ, "!="},
+		{token.STRING, "foobar"},
+		{token.STRING, "foo bar"},
 		{token.EOF, ""},
 	}
 
