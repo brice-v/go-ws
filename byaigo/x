@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import subprocess
 
 
 args = sys.argv
@@ -20,4 +21,8 @@ if "build" in args:
 
 if "run" in args:
     os.system("go build ~/dev/go-ws/src/byaigo")
-    os.system("/home/brice/go-ws/src/byaigo/byaigo")
+    try:
+        subprocess.call("/home/brice/dev/go-ws/src/byaigo/byaigo", shell=True)
+    except KeyboardInterrupt:
+        os.system("clear")
+        sys.exit(0)
