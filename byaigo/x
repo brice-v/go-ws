@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
-import os
-import sys
-import subprocess
+from os import remove as rm
+from os import system as run
+from sys import exit
+from subprocess import call
+
+from sys import argv as ARGS
 
 
-args = sys.argv
+if "clean" in ARGS:
+    rm("/home/brice/dev/go-ws/src/byaigo/byaigo")
 
+if "test" in ARGS:
+    run("go test ~/dev/go-ws/src/byaigo/evaluator/")
+    run("go test ~/dev/go-ws/src/byaigo/parser/")
+    run("go test ~/dev/go-ws/src/byaigo/ast/")
+    run("go test ~/dev/go-ws/src/byaigo/lexer/")
 
-if "clean" in args:
-    os.remove("/home/brice/dev/go-ws/src/byaigo/byaigo")
+if "build" in ARGS:
+    run("go build ~/dev/go-ws/src/byaigo")
 
-if "test" in args:
-    os.system("go test ~/dev/go-ws/src/byaigo/evaluator/")
-    os.system("go test ~/dev/go-ws/src/byaigo/parser/")
-    os.system("go test ~/dev/go-ws/src/byaigo/ast/")
-    os.system("go test ~/dev/go-ws/src/byaigo/lexer/")
-
-if "build" in args:
-    os.system("go build ~/dev/go-ws/src/byaigo")
-
-if "run" in args:
-    os.system("go build ~/dev/go-ws/src/byaigo")
+if "run" in ARGS:
+    run("go build ~/dev/go-ws/src/byaigo")
     try:
-        subprocess.call("/home/brice/dev/go-ws/src/byaigo/byaigo", shell=True)
+        call("/home/brice/dev/go-ws/src/byaigo/byaigo", shell=True)
     except KeyboardInterrupt:
-        os.system("clear")
-        sys.exit(0)
+        run("clear")
+        exit()
