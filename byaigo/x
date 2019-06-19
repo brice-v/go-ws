@@ -14,3 +14,10 @@ if "test" in args:
     os.system("go test ~/dev/go-ws/src/byaigo/parser/")
     os.system("go test ~/dev/go-ws/src/byaigo/ast/")
     os.system("go test ~/dev/go-ws/src/byaigo/lexer/")
+
+if "build" in args:
+    os.system("go build ~/dev/go-ws/src/byaigo")
+
+if "run" in args:
+    os.system("go build ~/dev/go-ws/src/byaigo")
+    os.system("/home/brice/go-ws/src/byaigo/byaigo")
