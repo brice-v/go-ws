@@ -3,12 +3,14 @@ from os import remove as rm
 from os import system as run
 from sys import exit
 from subprocess import call
+from os.path import isfile
 
 from sys import argv as ARGS
 
+exe = "/home/brice/dev/go-ws/src/byaigo/byaigo"
 
 if "clean" in ARGS:
-    rm("/home/brice/dev/go-ws/src/byaigo/byaigo")
+    rm(exe)
 
 if "test" in ARGS:
     run("go test ~/dev/go-ws/src/byaigo/evaluator/")
@@ -22,7 +24,9 @@ if "build" in ARGS:
 if "run" in ARGS:
     run("go build ~/dev/go-ws/src/byaigo")
     try:
-        call("/home/brice/dev/go-ws/src/byaigo/byaigo", shell=True)
+        call(exe, shell=True)
     except KeyboardInterrupt:
         run("clear")
+        if isfile(exe):
+            rm(exe)
         exit()
