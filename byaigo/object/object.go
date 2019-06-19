@@ -18,6 +18,9 @@ const (
 	// INTEGER_OBJ is the Integer object type
 	INTEGER_OBJ = "INTEGER"
 
+	// STRING_OBJ is the String object type
+	STRING_OBJ = "STRING"
+
 	// BOOLEAN_OBJ is the Boolean object type
 	BOOLEAN_OBJ = "BOOLEAN"
 
@@ -81,6 +84,18 @@ func (i *Integer) Inspect() string { return fmt.Sprintf("%d", i.Value) }
 
 // Type returns the type of the object
 func (i *Integer) Type() ObjectType { return INTEGER_OBJ }
+
+// String is the string type used to represent string literals and holds
+// an internal string value
+type String struct {
+	Value string
+}
+
+// Type returns the type of the object
+func (s *String) Type() ObjectType { return STRING_OBJ }
+
+// Inspect returns a stringified version of the object for debugging
+func (s *String) Inspect() string { return s.Value }
 
 // Boolean is the boolean type and used to represent boolean literals and
 // holds an interval bool value
