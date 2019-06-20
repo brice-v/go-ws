@@ -45,7 +45,17 @@ const (
 
 	// HASH_OBJ is the hash object type
 	HASH_OBJ = "HASH"
+
+	// QUOTE_OBJ is the quote object type
+	QUOTE_OBJ = "QUOTE"
 )
+
+type Quote struct {
+	Node ast.Node
+}
+
+func (q *Quote) Type() ObjectType { return QUOTE_OBJ }
+func (q *Quote) Inspect() string  { return "QUOTE(" + q.Node.String() + ")" }
 
 type HashPair struct {
 	Key   Object
