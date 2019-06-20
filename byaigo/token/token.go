@@ -34,6 +34,10 @@ const (
 	EQ  = "=="
 	NEQ = "!="
 
+	// List Tokens
+	LBRACKET = "["
+	RBRACKET = "]"
+
 	// Delimeters
 	COMMA     = ","
 	SEMICOLON = ";"
