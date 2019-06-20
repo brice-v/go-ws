@@ -38,6 +38,9 @@ const (
 	LBRACKET = "["
 	RBRACKET = "]"
 
+	// Hash Token
+	COLON = ":"
+
 	// Delimeters
 	COMMA     = ","
 	SEMICOLON = ";"
