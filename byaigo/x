@@ -18,6 +18,7 @@ if "test" in ARGS:
     run("go test ~/dev/go-ws/src/byaigo/ast/")
     run("go test ~/dev/go-ws/src/byaigo/lexer/")
     run("go test ~/dev/go-ws/src/byaigo/code/")
+    run("go test ~/dev/go-ws/src/byaigo/compiler/")
 
 if "build" in ARGS:
     run("go build ~/dev/go-ws/src/byaigo")
