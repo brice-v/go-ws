@@ -260,21 +260,25 @@ func TestConditionals(t *testing.T) {
 	tests := []compilerTestCase{
 		{
 			input: `
-	if (true) { 10 }; 3333;
+	if (true) { 10 } else { 20 }; 3333;
 	`,
-			expectedConstants: []interface{}{10, 3333},
+			expectedConstants: []interface{}{10, 20, 3333},
 			expectedInstructions: []code.Instructions{
 				// 0000
 				code.Make(code.OpTrue),
 				// 0001
-				code.Make(code.OpJmpNotTruthy, 7),
+				code.Make(code.OpJmpNotTruthy, 10),
 				// 0004
 				code.Make(code.OpConstant, 0),
 				// 0007
-				code.Make(code.OpPop),
-				// 0008
+				code.Make(code.OpJmp, 13),
+				// 0010
 				code.Make(code.OpConstant, 1),
-				// 0011
+				// 0013
+				code.Make(code.OpPop),
+				// 0014
+				code.Make(code.OpConstant, 2),
+				// 0017
 				code.Make(code.OpPop),
 			},
 		},
