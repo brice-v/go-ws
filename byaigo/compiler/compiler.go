@@ -114,40 +114,32 @@ func (c *Compiler) Compile(node ast.Node) error {
 		if err != nil {
 			return err
 		}
-		// Emit an OpJmpNotTruthy with a bogus value
+		// Emit an `OpJmpNotTruthy` with a bogus value
 		jumpNotTruthyPos := c.emit(code.OpJmpNotTruthy, 9999)
-
 		err = c.Compile(node.Consequence)
 		if err != nil {
 			return err
 		}
-
 		if c.lastInstructionIsPop() {
 			c.removeLastPop()
 		}
-
+		// Emit an `OpJmp` with a bogus value
+		jumpPos := c.emit(code.OpJmp, 9999)
+		afterConsequencePos := len(c.instructions)
+		c.changeOperand(jumpNotTruthyPos, afterConsequencePos)
 		if node.Alternative == nil {
-			afterConsequencePos := len(c.instructions)
-			c.changeOperand(jumpNotTruthyPos, afterConsequencePos)
+			c.emit(code.OpNull)
 		} else {
-			// Emit an `OpJmp` with a bogus value
-			jmpPos := c.emit(code.OpJmp, 9999)
-
-			afterConsequencePos := len(c.instructions)
-			c.changeOperand(jumpNotTruthyPos, afterConsequencePos)
-
 			err := c.Compile(node.Alternative)
 			if err != nil {
 				return err
 			}
-
 			if c.lastInstructionIsPop() {
 				c.removeLastPop()
 			}
-
-			afterAlternativePos := len(c.instructions)
-			c.changeOperand(jmpPos, afterAlternativePos)
 		}
+		afterAlternativePos := len(c.instructions)
+		c.changeOperand(jumpPos, afterAlternativePos)
 	case *ast.BlockStatement:
 		for _, s := range node.Statements {
 			err := c.Compile(s)

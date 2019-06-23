@@ -20,6 +20,8 @@ type VM struct {
 var True = &object.Boolean{Value: true}
 var False = &object.Boolean{Value: false}
 
+var Null = &object.Null{}
+
 func New(bytecode *compiler.Bytecode) *VM {
 	return &VM{
 		instructions: bytecode.Instructions,
@@ -92,7 +94,11 @@ func (vm *VM) Run() error {
 			if !isTruthy(condition) {
 				ip = pos - 1
 			}
-
+		case code.OpNull:
+			err := vm.push(Null)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
