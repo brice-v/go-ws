@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"byaigo/compiler"
 	"byaigo/lexer"
+	"byaigo/object"
 	"byaigo/parser"
 	"byaigo/vm"
 	"fmt"
@@ -27,6 +28,10 @@ const MONKEY_FACE = `            __,__
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+
+	constants := []object.Object{}
+	globals := make([]object.Object, vm.GlobalSize)
+	symbolTable := compiler.NewSymbolTable()
 	// env := object.NewEnvironment()
 
 	// macroEnv := object.NewEnvironment()
@@ -59,13 +64,17 @@ func Start(in io.Reader, out io.Writer) {
 		// }
 
 		// This is for the bytecode compiler/interpreter
-		comp := compiler.New()
+		comp := compiler.NewWithState(symbolTable, constants)
 		err := comp.Compile(program)
 		if err != nil {
 			fmt.Fprintf(out, "Woops! Compilation failed:\n %s\n", err)
 			continue
 		}
-		machine := vm.New(comp.Bytecode())
+
+		code := comp.Bytecode()
+		constants = code.Constants
+
+		machine := vm.NewWithGlobalsStore(code, globals)
 		err = machine.Run()
 		if err != nil {
 			fmt.Fprintf(out, "Woops! Executing bytecode failed:\n %s\n", err)
