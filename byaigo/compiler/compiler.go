@@ -174,8 +174,9 @@ func (c *Compiler) Compile(node ast.Node) error {
 			if err != nil {
 				return err
 			}
-			c.emit(code.OpArray, len(node.Elements))
 		}
+		c.emit(code.OpArray, len(node.Elements))
+
 	case *ast.HashLiteral:
 		keys := []ast.Expression{}
 		for k := range node.Pairs {
@@ -196,6 +197,19 @@ func (c *Compiler) Compile(node ast.Node) error {
 			}
 		}
 		c.emit(code.OpHash, len(node.Pairs)*2)
+	case *ast.IndexExpression:
+		err := c.Compile(node.Left)
+		if err != nil {
+			return err
+		}
+
+		err = c.Compile(node.Index)
+		if err != nil {
+			return err
+		}
+
+		c.emit(code.OpIndex)
+
 	}
 	return nil
 }
