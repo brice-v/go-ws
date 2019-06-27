@@ -6,6 +6,7 @@ package object
 
 import (
 	"byaigo/ast"
+	"byaigo/code"
 	"bytes"
 	"fmt"
 	"hash/fnv"
@@ -51,7 +52,19 @@ const (
 
 	// MACRO_OBJ is the macro literal object type
 	MACRO_OBJ = "MACRO"
+
+	// COMPILED_FUNCTION_OBJ is the compiler funciton object type
+	COMPILED_FUNCTION_OBJ = "COMPILED_FUNCTION_OBJ"
 )
+
+type CompiledFunction struct {
+	Instructions code.Instructions
+}
+
+func (cf *CompiledFunction) Type() ObjectType { return COMPILED_FUNCTION_OBJ }
+func (cf *CompiledFunction) Inspect() string {
+	return fmt.Sprintf("CompiledFunction[%p]", cf)
+}
 
 type Macro struct {
 	Parameters []*ast.Identifier
