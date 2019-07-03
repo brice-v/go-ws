@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-const GlobalsSize = 65536
+const GlobalSize = 65536
 
 const StackSize = 2048
 
@@ -38,7 +38,7 @@ func New(bytecode *compiler.Bytecode) *VM {
 		constants:   bytecode.Constants,
 		stack:       make([]object.Object, StackSize),
 		sp:          0,
-		globals:     make([]object.Object, GlobalsSize),
+		globals:     make([]object.Object, GlobalSize),
 		frames:      frames,
 		framesIndex: 1,
 	}
