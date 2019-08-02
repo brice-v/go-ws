@@ -253,8 +253,9 @@ func (c *Compiler) Compile(node ast.Node) error {
 		instructions := c.leaveScope()
 
 		compileFn := &object.CompiledFunction{
-			Instructions: instructions,
-			NumLocals:    numLocals,
+			Instructions:  instructions,
+			NumLocals:     numLocals,
+			NumParameters: len(node.Parameters),
 		}
 		c.emit(code.OpConstant, c.addConstant(compileFn))
 	case *ast.ReturnStatement:
