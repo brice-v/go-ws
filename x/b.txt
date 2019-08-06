@@ -1,0 +1,270 @@
+fun main() {
+    # Single Line Comment
+    ###
+        Block Comment
+    ###
+    
+    var # Mutable variable assignment
+    var x = 1
+    x = 4 # Works
+    
+    val # Immutable variable assignment
+    val y = 19
+    y = 1 # Compiler Error - Cannot Reassign Immutable variable
+    
+    # Use Type inference when assiging variables
+    
+    # Can also use type annotations (potentially for better performance)
+    ### Types
+        int, i8, i16, i32, i64
+        uint, u8, u16, u32, u64
+        str
+        struct # Which is just an object maybe use `obj` -> maybe this should be renamed
+        enum
+        list/slice
+        dict/hashmap # typing would be like dict[str]int
+        fn/fun # depending on what we name it
+        channel # chrecv/chsend ; receiving channel, sending channel # maybe use the <- syntax
+        any # the any type which just encapsulates everything (essentially an empty interface)
+        bool
+        char
+        rune
+    ###
+
+    ### Operators
+        +
+        -
+        *
+        /
+        & # bitwise and
+        | # bitwise or
+        ~ # bitwise not
+        ^ # bitwise xor (or when used with sets, symmetric difference)
+        // # Floor division (no remainder)
+        **
+        >>
+        <<
+        && also written as `and`
+        || also written as `or`
+        ! also written as `not`
+        % # modulo
+        == # check return true if left == right
+        >=
+        <=
+        >
+        <
+    ### TODO Have way to give raw strings a meaning
+
+    ### Assigment Operators
+        +=
+        -=
+        /=
+        //=
+        *=
+        **=
+        &=
+        |=
+        ~=
+        >>=
+        <<=
+        %=
+        # Logical operators wont have assignment combo operators
+    ###
+
+    fun test(x : int, y : int) : int { return x + y }() # Call a function inline
+    val mytest = fun(x : int, y : int) : int { return x + y } # Assinging variable to function
+    mytest(1,4) # Calling above function
+
+    # First class functions
+
+    val xa = mytest(1,4) + fun() : int { 1214 + 802520 * 248}
+
+    # Var args
+    fun some(args : ...int) {
+        for i in args {
+            println(i) # This will always give the item
+            # if its a slice/list of ints its always the 
+        }
+        for i, v in args {
+            # This syntax allows you to get the value and the item index
+            println(i, v)
+        }
+    }
+
+}
+
+
+
+### Other notes
+
+    - No semicolons needed
+    - Builtin doc generator
+    - builtin package manager (done the same way as something like rust with semver)
+    - good size std lib like the python one (possibly with gui - maybe something simple or use like fyne)
+    - can run funtions at top level
+    - scripting should be easy and intuitive
+    - just going to use channels and go routines
+    - have a set of good math/crypto by using go's
+        - as well as all the other good parts
+        - archiving/compression
+        - sqlite builtin or maybe some other db
+        - dealing with csv builtin
+        - io, files, sockets, etc...
+        - os layer thats similar to posix and shell scripting
+        - good datetime layer like pythons
+        - argparser, flagparser, interacting with env vars
+    - have a good set of collections # b trees, rb trees, queues etc...
+    - `in` keyword like python allows iteration over a list/slice/range/etc...
+    - maybe include some go libs to provide extra cool functionality
+    - test blocks for easy testing in a file or as a seperate file
+    - Importing is like it is in go but NOTE: need to fix the gopath stuff to make it trivial
+        - Or im gonna make it like it is in zig/js const myns = import("path/here")
+        -                                         maybe const _ = import("path") will make the names top level
+        -                                 or somethign like const __main__ = ... because thats like the top level 
+    - maybe make regex top level like it is in ruby/js `/[0-9]abc\w+/`
+    - raw strings like in go with ` backtick
+    - using go gc and their scheduler
+    - will need some formatter builtin (like gofmt or black)
+    - string interpolation in any string
+    - some sort of debugger builtin possibly
+    - maybe have shortcut in order to execute shell commands (but still in go)
+    - maybe console ui package
+    - builtin generics probably - this will just generate code for every type but if it can determine at compile time who calls then it can just generate the necessary
+    - json decoding and other configuration parsing stuff
+    - all str stuff would act like pythons
+    - requests like pacakge builtin that allows you to download something easy ( this would be apart of the package manager)
+
+    - add warnings for other common coding languages to help transistion
+        - like if someone types elif or elsif or elseif - tell them to try `else if`
+
+    - pattern matching would be cool to add (a more powerful switch where you can match on a struct/objects fields and stuff)
+    - maybe optionals
+    - union types would also be cool
+
+    - var and val can both be used at top level and will then represent a global var
+
+    - ranges would be cool like 1..13, 1.., 13..1, etc....
+    - using go should be easy
+
+    - debug printing that works like ic
+
+    - some way to generate obj fields like js.  x.name = "John"  ==== (x = { :name, "John" })
+
+    - question mark to propogate err (if err != nil) and using match we can handle it like rust
+
+    - implicit return from functions as last line - only if annotated with return value? 
+        - have to figure this out more
+        - From Astro: A semi-colon at the end of a block, prevents the block from returning its last value
+    
+    - Use everything as an expression, for expression, function expression, if expression, etc...
+
+    - Becuase of the backend in go, interfaces are satisfied my just implementing them
+    - the syntax might just end up being
+        interface Stringer {
+            to_string() str
+        }
+        # Can declare types that are just objects
+        type mytype obj {
+            name: str,
+            age: int,
+        }
+        # Instead of putting the values in, you put in the types
+        # To implement simply satisfy the function
+        fun (o: mytype) to_str() : str {           # NOTE - do we want to use a : or -> when denoting return types?
+            "#{=o.name}, #{=o.age}"
+        } # When we use this =variable syntax within string interpolation we can make that do debug printing similar to ic (from icecream)
+        # Also this may not be a great example becuase we may not necessarily want to define a to_str method, but i digress
+        - to use this it would look like
+
+        val abc : mytype = {name: "Brice", age: 22}
+        println(abc.to_str())
+        ## `abc.name: "Brice", abc.age: 22`
+    - More things can be explored this was just an initial foray into it
+    - Similar to something in go, i might just use that go syntax explicitly
+    - havent gone too much in to the deep end but it can be evaluated later becuase it still needs to work with everything
+###
+
+### Following Examples Led by Astro Lang
+
+    - Want Comprehensions and high level set operations
+    - Set Comp =>       (x for x in z)
+    - Dict Comp =>      {x: y for x, y in zz}
+    - List Comp =>      [x for x in z]
+    - Lambdas =>        |x,y| => x**2 + y**2
+    - Regex Literal =>  /[0-9]{1,}/
+    - Object Literal => var x = obj {name: "hello", age: 24}
+    - Range Literal =>  1..10 (1 to 10 inclusive so this would could 1,2,3,4,5,6,7,8,9,10)
+        - 1..<10 for noninclusive (1 to 10 noninclusive would be 1,2,3,4,5,6,7,8,9)
+    - Hex, Octal, Binary
+    Literals =>         0x, 0o, 0b
+    - Underscore for number separation 1_000_000
+    - allow use of symbols in identifiers possibly
+    - Maybe slices can be done with ranges but the python way probably makes more sense when you add in step
+    - symbols/atoms? => :name = "b" 
+    - Example of what astro does that i was thinking of
+            // A dictionary whose keys are symbols and key-value pairs specified at initialization are optimized
+            var object = { name: "James", age: 6 }
+    - Sets, Dicts, and Lists can all be Mutable or Immutable thanks to var and val
+    - with sets i want to support | for union, & for intersection, - for difference, ^ for symmetric difference (everything 2 sets dont have in common)
+    - also with sets the comparison operators should check for subset between two sets using set1 < set2, set1 > set2, etc...
+    - check if something is in a set, dict, list with `in` keyword
+    - String formatting and interpolation can be done on any string
+        - things like padding, spaces, etc
+        - ${} seems to be the most common way but i like the way #{} looks and we use a lot of # signs
+        - characters should be able to be escaped using backslash
+        - maybe raw strings will use backticks like in go
+    - breaking lines shouldnt matter in the language
+
+    - and, or, not should all work alongside && || !
+    - if, elif, else should work
+        - elsif should return compiler warning
+        - else if possibly should work due to everything being an expression but this should warn too
+    
+    - only one loop - for loop 
+    - Proper pattern matching with struct/objects/sets etc...
+        - This means things need to be able to destructure properly
+    
+    - Top level main should not be needed but can be used as an entry point otherwise
+        a different top level statement will be used as the root node
+    - Default parameters in function should be allowed
+    - maybe include union types 
+    - Immediately invoked functions will be possible with closures and anon funcs
+    - Might need yield and next to do iterators? not sure yet
+    - Try to include macros like the one in the monkey language
+    - Allow casting of types and possibly types can be first class
+    - Do what go does with typing to make methods work
+    - Figure out how we want fields to be with visibility (should they just use the pub keyword to make them visible?)
+
+###
+### Some Kotlin Examples
+
+when (x) {
+    in 1..10 -> print("x is in the range")
+    in validNumbers -> print("x is valid")
+    !in 10..20 -> print("x is outside the range")
+    else -> print("none of the above")
+}
+match x {
+    1..10 => print("x is in the range"),
+    validNumbers => print("x is valid"), # assuming validNumbers is some type of range
+    not 10..20 => print("x is outside of the range"),
+    {name: "brice", age: 22} => {
+        # In this case the x is matched against an object with 2 named fields with values
+        print("My name is #{x.name}")
+        # Side note - are objects just hashmaps?
+    },
+    else => print("None of the above"),
+    # Commas at the end of everything - improves readability 
+}
+
+
+
+# Going to use else for default case
+# Want to support is_str, is_num or just `is` in general
+# Use `match` instead of when and allow proper pattern matching - maybe start it off as a basic switch case thing
+    # Determine the `->` syntax maybe this is best or `:` ? -- probably going to use => because its similar to Lambdas so we are reusing that symbol
+
+
+
+###
+# I just want a good scripting language for me that compiles to native code on many platforms 
