@@ -19,7 +19,7 @@ var Builtins = []struct {
 			case *String:
 				return &Integer{Value: int64(len(arg.Value))}
 			default:
-				return newError("argument to `len` not supported, got=%s", args[0].Type())
+				return newError("argument to `len` not supported, got %s", args[0].Type())
 			}
 		},
 		},
