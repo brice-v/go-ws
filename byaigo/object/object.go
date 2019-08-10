@@ -55,7 +55,20 @@ const (
 
 	// COMPILED_FUNCTION_OBJ is the compiler funciton object type
 	COMPILED_FUNCTION_OBJ = "COMPILED_FUNCTION_OBJ"
+
+	// CLOSURE_OBJ is the closure object type
+	CLOSURE_OBJ = "CLOSURE_OBJ"
 )
+
+type Closure struct {
+	Fn   *CompiledFunction
+	Free []Object
+}
+
+func (c *Closure) Type() ObjectType { return CLOSURE_OBJ }
+func (c *Closure) Inspect() string {
+	return fmt.Sprintf("Closure[%p]", c)
+}
 
 type CompiledFunction struct {
 	Instructions  code.Instructions
